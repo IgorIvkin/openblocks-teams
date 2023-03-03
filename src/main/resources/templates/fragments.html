@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head th:fragment="head-element">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title th:inline="text">[[${pageTitle}]]</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap&subset=cyrillic"
+          rel="stylesheet">
+    <link href="/css/main.css" rel="stylesheet" type="text/css">
+
+    <script src="/js/auth/keycloak.js" defer crossorigin></script>
+    <script src="/js/auth/initialization.js" defer crossorigin></script>
+
+    <!-- Рендерим динамически добавляемый Javascript -->
+    <script>
+        let applicationVersion = '[[${applicationVersion}]]';
+    </script>
+
+    <th:block th:replace="__${javaScriptData}__"></th:block>
+
+    <th:block th:each="script : ${javascript}">
+        <script th:src="${script} + '?version=' + ${applicationVersion}" crossorigin></script>
+    </th:block>
+
+    <th:block th:each="script : ${javascriptModules}">
+        <script th:src="${script} + '?version=' + ${applicationVersion}" type="module" crossorigin></script>
+    </th:block>
+</head>
+<body>
+
+<div th:fragment="header">
+    <div class="header">
+
+    </div>
+</div>
+
+<div th:fragment="footer">
+    <div class="footer">
+
+    </div>
+</div>
+
+</body>
+</html>

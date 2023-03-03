@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head th:replace="~{fragments :: head-element}"></head>
+
+<body>
+
+<div class="modal-window" id="modal-window"></div>
+
+<div th:replace="~{fragments :: header}"></div>
+<div class="container">
+  <div th:replace="~{__${contentTemplateName}__}"></div>
+</div>
+<div th:replace="~{fragments :: footer}"></div>
+
+</body>
+</html>

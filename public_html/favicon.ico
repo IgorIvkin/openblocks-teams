@@ -1,0 +1,10 @@
+{
+  "realm": "infra",
+  "auth-server-url": "http://localhost:8534/",
+  "ssl-required": "external",
+  "resource": "teams-web-app",
+  "credentials": {
+    "secret": "ljUksuvqtr2UVrD665d3m0WJNRqXR2KP"
+  },
+  "confidential-port": 0
+}
