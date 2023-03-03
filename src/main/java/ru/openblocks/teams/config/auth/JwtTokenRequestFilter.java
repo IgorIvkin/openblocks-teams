@@ -1,5 +1,7 @@
 package ru.openblocks.teams.config.auth;
 
+import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.util.Date;
 
 @Slf4j
 @Component
@@ -32,13 +36,25 @@ public class JwtTokenRequestFilter extends OncePerRequestFilter {
 
         final String token = getJwtToken(request);
         if (token != null) {
-            mutableRequest.setHeader(HttpHeaders.AUTHORIZATION, BEARER + token);
+            if (!isJwtTokenExpired(token)) {
+                mutableRequest.setHeader(HttpHeaders.AUTHORIZATION, BEARER + token);
+            }
         }
 
         log.info("JwtTokenRequestFilter - finish filtering, request: {}", request.getRequestURI());
 
         // Продолжаем цепочку фильтрации
         filterChain.doFilter(mutableRequest, response);
+    }
+
+    private boolean isJwtTokenExpired(String token) {
+        try {
+            SignedJWT jwt = SignedJWT.parse(token);
+            JWTClaimsSet jwtClaimsSet = jwt.getJWTClaimsSet();
+            return jwtClaimsSet.getExpirationTime().before(new Date());
+        } catch (ParseException ex) {
+            throw new IllegalStateException("Cannot parse JWT-token, reason: " + ex.getMessage());
+        }
     }
 
     private String getJwtToken(HttpServletRequest request) {

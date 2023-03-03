@@ -1,3 +1,5 @@
+let keycloak = null;
+
 function setCookie(name, value, days) {
     let expires = ""
     if (days) {
@@ -9,7 +11,7 @@ function setCookie(name, value, days) {
 }
 
 function initKeycloak() {
-    const keycloak = new Keycloak()
+    keycloak = new Keycloak()
     keycloak.init(
         {
             onLoad: 'check-sso',
@@ -21,6 +23,12 @@ function initKeycloak() {
         } else {
             const token = keycloak.token
             setCookie('jwtToken', token, 30)
+
+            const urlParams = new URLSearchParams(window.location.search)
+            const redirectUrl = urlParams.get('redirectUrl')
+            if (redirectUrl) {
+                window.location.href = redirectUrl
+            }
         }
     }).catch(function (error) {
         console.error(error)

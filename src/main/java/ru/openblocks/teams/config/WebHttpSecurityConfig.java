@@ -10,8 +10,10 @@ import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import ru.openblocks.teams.config.auth.JwtTokenRequestFilter;
+import ru.openblocks.teams.config.auth.RedirectingLoginUrlAuthenticationEntryPoint;
 
 @Configuration
 @EnableWebSecurity
@@ -38,7 +40,9 @@ public class WebHttpSecurityConfig {
                                 .requestMatchers("/login", "/login/**").permitAll()
                                 .anyRequest().authenticated()
                 )
-                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
+                .exceptionHandling()
+                .authenticationEntryPoint(new RedirectingLoginUrlAuthenticationEntryPoint("/login"));
         return http.build();
     }
 }
