@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import ru.openblocks.teams.util.TokenUtils;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -36,7 +37,7 @@ public class JwtTokenRequestFilter extends OncePerRequestFilter {
 
         final String token = getJwtToken(request);
         if (token != null) {
-            if (!isJwtTokenExpired(token)) {
+            if (!TokenUtils.isJwtTokenExpired(token)) {
                 mutableRequest.setHeader(HttpHeaders.AUTHORIZATION, BEARER + token);
             }
         }
@@ -45,16 +46,6 @@ public class JwtTokenRequestFilter extends OncePerRequestFilter {
 
         // Продолжаем цепочку фильтрации
         filterChain.doFilter(mutableRequest, response);
-    }
-
-    private boolean isJwtTokenExpired(String token) {
-        try {
-            SignedJWT jwt = SignedJWT.parse(token);
-            JWTClaimsSet jwtClaimsSet = jwt.getJWTClaimsSet();
-            return jwtClaimsSet.getExpirationTime().before(new Date());
-        } catch (ParseException ex) {
-            throw new IllegalStateException("Cannot parse JWT-token, reason: " + ex.getMessage());
-        }
     }
 
     private String getJwtToken(HttpServletRequest request) {

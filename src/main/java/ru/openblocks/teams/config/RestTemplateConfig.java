@@ -18,8 +18,13 @@ public class RestTemplateConfig {
                 .build();
     }
 
-    @Bean(name = "keycloak-rest-template")
-    public RestTemplate keyCloakRestTemplate(RestTemplateBuilder builder) {
+    @Bean(name = "infrastructure-rest-template")
+    public RestTemplate infrastuctureRestTemplate(RestTemplateBuilder builder) {
+        return restTemplate(builder);
+    }
+
+    @Bean(name = "cs-users-rest-template")
+    public RestTemplate csUsersRestTemplate(RestTemplateBuilder builder) {
         return restTemplate(builder);
     }
 }

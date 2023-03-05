@@ -47,3 +47,20 @@ opentracing:
       host: localhost
       port: 6831
     enable-b3-propagation: true
+
+# Настройки для взаимодействия с инфраструктурой предприятия
+infrastructure:
+  keycloak:
+    host: http://localhost:8534
+    client-id: 'infra-backend'
+    client-secret: 'zYFKzsFiwQmpArln0P0bfjuzD437cC78'
+    urls:
+      get-tech-token: /realms/infra/protocol/openid-connect/token
+
+# Настройки для взаимодействия с общим сервисом "Пользователи"
+cs-users:
+  host: http://localhost:8101
+  max-retries: 3
+  retry-delay-ms: 3000
+  urls:
+    search: /api/v1/users/search
