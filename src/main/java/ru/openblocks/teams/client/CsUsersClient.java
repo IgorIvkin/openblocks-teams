@@ -21,9 +21,7 @@ import java.util.List;
  */
 @Slf4j
 @Component
-public class CsUsersClient {
-
-    private static final String BEARER = "Bearer ";
+public class CsUsersClient extends AbstractCsClient {
 
     private final RestTemplate restTemplate;
 
@@ -70,19 +68,6 @@ public class CsUsersClient {
             log.error("Cannot search users in Common Service Users", ex);
             throw new CsUsersException("Cannot search users in Common Service Users, reason: " + ex.getMessage());
         }
-    }
-
-    private <T> HttpEntity<T> getBasicTypedHttpRequest(String token,
-                                                       T request) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(HttpHeaders.AUTHORIZATION, BEARER + token);
-        return new HttpEntity<>(request, headers);
-    }
-
-    private HttpEntity<Void> getBasicHttpRequest(String token) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(HttpHeaders.AUTHORIZATION, BEARER + token);
-        return new HttpEntity<>(headers);
     }
 
 }

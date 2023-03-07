@@ -27,4 +27,9 @@ public class RestTemplateConfig {
     public RestTemplate csUsersRestTemplate(RestTemplateBuilder builder) {
         return restTemplate(builder);
     }
+
+    @Bean(name = "cs-roles-rest-template")
+    public RestTemplate csRolesRestTemplate(RestTemplateBuilder builder) {
+        return restTemplate(builder);
+    }
 }

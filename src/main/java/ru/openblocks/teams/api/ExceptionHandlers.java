@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.openblocks.teams.api.dto.error.ErrorMessage;
+import ru.openblocks.teams.exception.CsRolesException;
 import ru.openblocks.teams.exception.CsUsersException;
 import ru.openblocks.teams.exception.InfraClientException;
 
@@ -21,6 +22,12 @@ public class ExceptionHandlers {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
     public ErrorMessage csUsersException(CsUsersException ex) {
+        return handleDefaultException(ex);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    public ErrorMessage csRolesException(CsRolesException ex) {
         return handleDefaultException(ex);
     }
 

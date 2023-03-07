@@ -64,3 +64,12 @@ cs-users:
   retry-delay-ms: 3000
   urls:
     search: /api/v1/users/search
+
+# Настройки для взаимодействия с общим сервисом "Роли"
+cs-roles:
+  host: http://localhost:8102
+  max-retries: 3
+  retry-delay-ms: 3000
+  urls:
+    get-roles-by-user: /api/v1/user-roles/users/{userName}
+
