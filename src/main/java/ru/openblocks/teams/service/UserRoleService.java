@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.openblocks.teams.client.CsRolesClient;
+import ru.openblocks.teams.client.dto.roles.create.request.UserRoleCreateRequest;
 import ru.openblocks.teams.client.dto.roles.getbyuser.response.UserRoleGetResponse;
 
 import java.util.List;
@@ -30,5 +31,14 @@ public class UserRoleService {
      */
     public List<UserRoleGetResponse> getUserRolesByUserName(String userName) {
         return csRolesClient.getUserRolesByUserName(userName);
+    }
+
+    /**
+     * Добавляет роль пользователю.
+     *
+     * @param request запрос на добавление роли пользователю
+     */
+    public void addRoleToUser(UserRoleCreateRequest request) {
+        csRolesClient.addRoleToUser(request);
     }
 }

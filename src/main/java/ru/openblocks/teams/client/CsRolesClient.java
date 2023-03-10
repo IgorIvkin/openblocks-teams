@@ -10,6 +10,7 @@ import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import ru.openblocks.teams.client.dto.roles.create.request.UserRoleCreateRequest;
 import ru.openblocks.teams.client.dto.roles.getbyuser.response.UserRoleGetResponse;
 import ru.openblocks.teams.config.CsRolesConfig;
 import ru.openblocks.teams.exception.CsRolesException;
@@ -52,7 +53,7 @@ public class CsRolesClient extends AbstractCsClient {
 
         final String token = infrastructureService.getTechToken();
         final String url = buildSearchByUserUrl(userName);
-        log.info("Request to Common Service Roles, url: {}", url);
+        log.info("Request to Common Service Roles, get user roles, url: {}", url);
 
         try {
 
@@ -66,6 +67,35 @@ public class CsRolesClient extends AbstractCsClient {
         } catch (Exception ex) {
             log.error("Cannot get user roles in Common Service Roles", ex);
             throw new CsRolesException("Cannot get user roles in Common Service Roles, reason: " + ex.getMessage());
+        }
+    }
+
+    /**
+     * Добавляет роль пользователю.
+     *
+     * @param request запрос на добавление роли пользователю
+     */
+    @Retryable(maxAttemptsExpression = "${cs-roles.max-retries}",
+            backoff = @Backoff(delayExpression = "${cs-roles.retry-delay-ms}"))
+    public void addRoleToUser(UserRoleCreateRequest request) {
+
+        final String token = infrastructureService.getTechToken();
+        final String url = csRolesConfig.getHost()
+                + csRolesConfig.getUrls().get(CsRolesConfig.ADD_ROLE_TO_USER_URL);
+        log.info("Request to Common Service Roles, add role to user, url: {}, request: {}", url, request);
+
+        try {
+
+            restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    getBasicTypedHttpRequest(token, request),
+                    UserRoleCreateRequest.class
+            );
+
+        } catch (Exception ex) {
+            log.error("Cannot add role to user in Common Service Roles", ex);
+            throw new CsRolesException("Cannot add role to user in Common Service Roles, reason: " + ex.getMessage());
         }
     }
 

@@ -72,4 +72,5 @@ cs-roles:
   retry-delay-ms: 3000
   urls:
     get-roles-by-user: /api/v1/user-roles/users/{userName}
+    add-role-to-user: /api/v1/user-roles
 

@@ -17,6 +17,8 @@ public class CsRolesConfig {
 
     public static final String GET_ROLES_BY_USER_URL = "get-roles-by-user";
 
+    public static final String ADD_ROLE_TO_USER_URL = "add-role-to-user";
+
     @NotBlank
     private String host;
 
